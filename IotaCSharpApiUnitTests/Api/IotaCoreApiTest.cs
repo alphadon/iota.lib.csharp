@@ -2,7 +2,6 @@
 using Iota.Lib.CSharp.Api;
 using Iota.Lib.CSharp.Api.Core;
 using Iota.Lib.CSharp.Api.Exception;
-using Iota.Lib.CSharp.Api.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Iota.Lib.CSharpTests.Api
@@ -59,15 +58,29 @@ namespace Iota.Lib.CSharpTests.Api
         [TestMethod]
         public void shouldAddNeighbors()
         {
-            AddNeighborsResponse res = iotaApi.AddNeighbors("udp://8.8.8.8:14265");
-            Assert.IsNotNull(res);
+            try
+            {
+                AddNeighborsResponse res = iotaApi.AddNeighbors("udp://8.8.8.8:14265");
+                Assert.IsNotNull(res);
+            }
+            catch (IotaApiException e)
+            {
+                Assert.IsTrue(e.Message.Contains("not available on this node"));
+            }
         }
 
         [TestMethod]
         public void shouldRemoveNeighbors()
         {
-            RemoveNeighborsResponse res = iotaApi.RemoveNeighbors("udp://8.8.8.8:14265");
-            Assert.IsNotNull(res);
+            try
+            {
+                RemoveNeighborsResponse res = iotaApi.RemoveNeighbors("udp://8.8.8.8:14265");
+                Assert.IsNotNull(res);
+            }
+            catch (IotaApiException e)
+            {
+                Assert.IsTrue(e.Message.Contains("not available on this node"));
+            }
         }
 
         [TestMethod]
@@ -126,7 +139,7 @@ namespace Iota.Lib.CSharpTests.Api
             GetInclusionStatesResponse res =
                 iotaApi.GetInclusionStates(
                     new[] {"DBPECSH9YLSSTQDGERUHJBBJTKVUDBMTJLG9WPHBINGHIFOSJMDJLARTVOXXWEFQJLLBINOHCZGYFSMUEXWPPMTOFW"},
-                    new[] { iotaApi.GetNodeInfo().LatestSolidSubtangleMilestone });
+                    new[] {iotaApi.GetNodeInfo().LatestSolidSubtangleMilestone});
             Assert.IsNotNull(res.States);
         }
 
